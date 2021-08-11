@@ -1,0 +1,85 @@
+--1. 부서번호 10번인 사원들의 사원번호, 사원이름, 월급을 출력하시오.
+SELECT EMPNO, ENAME, SAL
+  FROM EX2_EMP
+ WHERE DEPTNO = 10;
+ 
+ --2. 사원번호 7369인 사원 이름, 입사일, 부서번호를 출력하시오.
+SELECT ENAME, HIREDATE, DEPTNO
+   FROM EX2_EMP
+  WHERE EMPNO = 7369;
+  
+--3. 사원번호 7300크고 7400 작은 사원 이름, 입사일, 부서번호를 출력하시오.
+SELECT ENAME, HIREDATE, DEPTNO
+  FROM EX2_EMP
+ WHERE EMPNO > 7300 AND EMPNO < 7400;
+
+--4. EMP 모든 정보를 (사원번호 기준 내림차순으로) 검색하시오.
+SELECT *
+  FROM EX2_EMP
+ ORDER BY EMPNO DESC;
+ 
+ -- 5. 직속상관 사원번호가 없는 사원의 모든 정보를 검색하시오.
+ SELECT *
+   FROM EX2_EMP
+  WHERE MGR IS NULL;
+  
+-- 6. 직책이 세일즈맨, 애널리스트인 사람의 모든 정보를 출력하시오.
+SELECT *
+  FROM EX2_EMP
+ WHERE JOB ='세일즈맨' OR JOB = '애널리스트';
+ 
+ -- 7. 1981년 5월 1일 ~ 1982년 2월 사이에 입사한 사원들의 모든 정보를 부서번호순(오름차순)으로 검색하시오.
+ SELECT *
+   FROM EX2_EMP
+  WHERE HIREDATE >= TO_DATE('19810501', 'YYYYMMDD')
+    AND HIREDATE < TO_DATE('19820228', 'YYYYMMDD')
+  ORDER BY DEPTNO;
+  
+-- 8. 1981년에 입사한 사원의 이름과 사원번호를 출력하는데 사원번호가 내림차순으로 정렬하시오.
+SELECT ENAME, EMPNO
+  FROM EX2_EMP
+ WHERE HIREDATE >= '19810101'
+   AND HIREDATE <= '19811231'
+ ORDER BY EMPNO;
+
+-- 9. 직급이 세일즈맨일 경우 급여 * 1.1, CLERK 일 경우 급여 * 1.3, MANAGER 일 경우 급여 * 1.5 를 하고 모든 정보를 출력하시오.
+  SELECT EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO,
+      CASE JOB WHEN '세일즈맨' THEN SAL*1.1
+               WHEN '사무직' THEN SAL*1.3
+               WHEN '매니저' THEN SAL*1.5
+       END AS "인상된급여"
+  FROM EX2_EMP;
+
+-- 10. 모든 사원들에게 커미션을 200씩 추가하여 사원이름, 커미션 값을 출력하시오.
+SELECT ENAME,
+   NVL(COMM,0)+200 AS "인상된커미션"
+  FROM EX2_EMP;
+
+-- 11. 1981년 입사자들의 평균 임금을 출력하시오.
+SELECT AVG(SAL)
+  FROM EX2_EMP
+ WHERE TO_CHAR(HIREDATE, 'YYYY') = '1981';
+
+-- 12. 사원번호, 사원이름, 총 급여를 출력 하시오.
+SELECT EMPNO, ENAME, SAL+NVL(COMM,0)
+  FROM EX2_EMP;
+
+-- 13. 세일즈맨의 커미션 평균을 출력하시오
+SELECT AVG(NVL(COMM,0)) AS "커미션평균"
+  FROM EX2_EMP
+ WHERE JOB = '세일즈맨';
+
+ -- 14. 직무 중 가장 적게 수입을 가지는 직무의 평균 월급을 출력하시오.
+ SELECT MIN(AVG(SAL)) AS "최저 평균월급"
+   FROM EX2_EMP
+ GROUP BY JOB;
+
+SELECT E.ENAME, E.SAL, D.DNAME, D.DEPTNO
+  FROM EX2_DEPT D, EX2_EMP E
+ WHERE D.DEPTNO = E.DEPTNO
+   AND D.DEPTNO = 30 AND E.SAL >= 1500;
+
+
+
+
+
