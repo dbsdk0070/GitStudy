@@ -1,0 +1,44 @@
+-- 1.부서별 인원수와 부서명을 출력하시오
+SELECT COUNT(*), D.DNAME
+  FROM EX1_DEPT D, EX1_EMP E
+ WHERE D.DEPTNO = E.DEPTNO
+   GROUP BY D.DEPTNO, D.DNAME;
+
+-- 2. 계좌번호가 13자리 이하인 대상의 급여테이블 정보를 출력하시오.
+SELECT *
+  FROM EX1_SALGRADE
+ WHERE LENGTH(ACT_NO) <= 13;
+
+-- 3.'입사일자'가 가장 늦은 사원의 사원번호를 출력하시오 (서브쿼리X)
+SELECT MAX(EMPNO)
+  KEEP(DENSE_RANK FIRST ORDER BY HIREDATE DESC) AS 부서번호
+  FROM EX1_EMP;
+
+-- 4.'여자' 직원들의 사원이름,급여,은행명,계좌번호를 출력하시오. (은행명은 코드값이 아닌 코드명으로 출력)
+SELECT E.ENAME, C.CODE_NM, S.ACT_NO
+  FROM EX1_EMP E, EX1_SALGRADE S, EX1_COMM_CODE C
+ WHERE E.EMPNO = S.EMPNO
+   AND E.SEX = 'W'
+   AND S.BANK = C.CODE;
+
+-- 5.부서별 평가등급이 'B등급'인 사람의 수를 출력하시오.
+SELECT COUNT(H.EMPNO)
+  FROM EX1_EMP E, EX1_HR H, EX1_COMM_CODE C
+ WHERE E.EMPNO = H.EMPNO
+   AND H.EVL_GRD = C.CODE
+   AND C.CODE_NM = 'B등급';
+
+-- 6.부서위치가 '시카고'가 아닌 부서위치,부서명,사원번호,사원이름을 출력하시오.
+SELECT LOC, DNAME, DEPTNO
+  FROM EX1_DEPT
+ WHERE LOC NOT IN 'CHICAGO';
+
+-- 7.사원이름에 'A'가 포함된 사원의 사원이름을 출력하시오.
+SELECT ENAME
+  FROM EX1_EMP
+ WHERE ENAME LIKE '%A%';
+
+-- 8.입사일자가 2018년1월1일부터 2019년12월31일 사이인 사원의 사원번호와 핸드폰 번호를 출력하시오
+SELECT EMPNO, HP_NO
+  FROM EX1_EMP
+ WHERE HIREDATE BETWEEN '18/0101' AND '191231';
